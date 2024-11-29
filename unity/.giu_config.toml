@@ -1,0 +1,2 @@
+unity_path = "C:/Program Files/Unity/Hub/Editor/2021.3.45f1/Editor/Unity.exe"
+platforms = ["Android", "iOS"]

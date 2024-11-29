@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Game
+  m_EditorClassIdentifier: 
+  m_GroupName: Game
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b26ff1fe98cbe5544ae63a59662af3bf
+  m_SerializeEntries:
+  - m_GUID: 0611b46a13c277a4f9153a10dfad3503
+    m_Address: Assets/Game/Res/6.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d7f88314b966884cbe5f222dc44e595
+    m_Address: Assets/Game/Res/5.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14d1b6409c873234299f1b179708ed3d
+    m_Address: Assets/Game/Res/10.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 240f8fdbca0c0404ab10035a36e048c6
+    m_Address: Assets/Game/Scenes/Game.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a0e237e7b0dae248bf95b6e1627c469
+    m_Address: Assets/Game/Res/8.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30b6e5f42d23a354687ed11ad9f36313
+    m_Address: Assets/Game/Res/2.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ccd67c8a55a4f740a20abd0ee922653
+    m_Address: Assets/Game/Res/9.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f2ad3b22def2cb48b82fb22872a375c
+    m_Address: Assets/Game/Res/4.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66d1eca5032ccf646917ec9a7b8e760f
+    m_Address: Assets/Game/Res/3.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c05966ef48031c43945c04eebed3dc6
+    m_Address: Assets/Game/Res/7.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: af7e92fe10cb33845b5e8a4cf90cf44d
+    m_Address: Assets/Game/Res/1.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b13f23bf7d1236b4b8e4da64b4f6185b
+    m_Address: Assets/Game/DLL/Game.dll.bytes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c6bab035b7c1ec34eb6407a9ccfae7f6
+    m_Address: Assets/Game/Scenes
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 08fe2f531a039b747b4be71546135f13, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e8409c5e62c59ba4496396cc822883a6, type: 2}
+    - {fileID: 11400000, guid: 5b7f91790c7dfb846ad8b9639484ef40, type: 2}

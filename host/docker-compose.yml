@@ -1,0 +1,14 @@
+services:
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./serve:/usr/share/html
+            - ./nginx/media:/etc/nginx/media
+            - ./ssl:/etc/nginx/ssl
+            - type: bind
+              source: ./nginx/nginx.conf
+              target: /etc/nginx/nginx.conf
