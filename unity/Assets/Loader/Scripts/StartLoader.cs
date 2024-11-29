@@ -14,10 +14,11 @@ public class StartLoader : MonoBehaviour
 {
 	public static bool IsInitialized { get; private set; } = false;
 
-	const string CHECK_UPDATE_URL = "https://127-0-0-1.traefik.me/";
+	const string CHECK_UPDATE_URL = "https://192-168-1-233.traefik.me/";
 
 	// Game
-	const string SCENE_GAME_DLL = "Assets/Game/DLL/Game.dll.bytes";
+	const string DLL_DIR_AOT = "AOTMeta";
+	const string DLL_DIR_UPDATE = "HotUpdate";
 	const string SCENE_GAME = "Assets/Game/Scenes/Game.unity";
 
 	public AnimProgress AnimProgress;
@@ -344,7 +345,7 @@ public class StartLoader : MonoBehaviour
 			// use persistentDataPath to store the cache
 			CatalogUrl.StringUrl = $"{Application.persistentDataPath}/AddrsCache";
 			Debug.Log("Initialize Addressables By Path: " + CatalogUrl.StringUrl);
-			await Addressables.InitializeAsync(true);
+			await Addressables.InitializeAsync();
 			IsInitialized = true;
 		}
 		else
@@ -357,9 +358,38 @@ public class StartLoader : MonoBehaviour
 
 		// Editor环境下，HotUpdate.dll.bytes已经被自动加载，不需要加载，重复加载反而会出问题。
 #if !UNITY_EDITOR
+
+		// 加载AOT程序集
+		Debug.Log("Loader.AsyncInitialize Load AOT");
+		var aotDllsHandle = Addressables.LoadAssetsAsync<TextAsset>(DLL_DIR_AOT, null);
+		var aotDlls = await aotDllsHandle.Task;
+		foreach (var aotDll in aotDlls)
+		{
+			HybridCLR.LoadImageErrorCode err = HybridCLR.RuntimeApi.LoadMetadataForAOTAssembly(aotDll.bytes, HybridCLR.HomologousImageMode.SuperSet);
+			Debug.Log($"LoadMetadataForAOTAssembly:{aotDll.name}. ret:{err}");
+		}
+		Addressables.Release(aotDllsHandle);
+
 		// 加载HotUpdate程序集
-		var dllBytes = await Addressables.LoadAssetAsync<TextAsset>(SCENE_GAME_DLL);
-		Assembly hotUpdateAss = Assembly.Load(dllBytes.bytes);
+		Debug.Log("Loader.AsyncInitialize Load HotUpdate");
+		var huDllsHandle = Addressables.LoadAssetsAsync<TextAsset>(DLL_DIR_UPDATE, null);
+		var huDlls = await huDllsHandle.Task;
+		foreach (var huDll in huDlls)
+		{
+			Debug.Log($"Load HotUpdate Assembly:{huDll.name}");
+
+			try
+			{
+				var gameAss = Assembly.Load(huDll.bytes);
+			}
+			catch (Exception e)
+			{
+				Debug.LogError($"Load HotUpdate Assembly:{huDll.name} Error:{e}");
+			}
+		}
+
+		Addressables.Release(huDllsHandle);
+
 #else
 		// Editor下无需加载，直接查找获得 Game 程序集
 		// Assembly hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Game");

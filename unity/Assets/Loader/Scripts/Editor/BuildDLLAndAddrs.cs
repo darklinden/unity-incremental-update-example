@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System.IO;
 using System.IO.Compression;
+using HybridCLR.Editor;
 using HybridCLR.Editor.Settings;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -63,27 +64,83 @@ public static class BuildDLLAndAddrs
 
         try
         {
-            HybridCLR.Editor.Commands.PrebuildCommand.GenerateAll();
+            HybridCLR.Editor.Commands.CompileDllCommand.CompileDll(EditorUserBuildSettings.activeBuildTarget);
+            HybridCLR.Editor.Commands.Il2CppDefGeneratorCommand.GenerateIl2CppDef();
+
+            // 这几个生成依赖HotUpdateDlls
+            HybridCLR.Editor.Commands.LinkGeneratorCommand.GenerateLinkXml(EditorUserBuildSettings.activeBuildTarget);
+
+            // 生成裁剪后的aot dll
+            HybridCLR.Editor.Commands.StripAOTDllCommand.GenerateStripedAOTDlls(EditorUserBuildSettings.activeBuildTarget);
+
+            // 桥接函数生成依赖于AOT dll，必须保证已经build过，生成AOT dll
+            HybridCLR.Editor.Commands.MethodBridgeGeneratorCommand.GenerateMethodBridgeAndReversePInvokeWrapper(EditorUserBuildSettings.activeBuildTarget);
+            HybridCLR.Editor.Commands.AOTReferenceGeneratorCommand.GenerateAOTGenericReference(EditorUserBuildSettings.activeBuildTarget);
         }
         catch (System.Exception e)
         {
-            Debug.LogError("BuildDLL Failed: " + e.Message);
+            Debug.LogError("Build Dll Failed: " + e.Message);
             return false;
         }
 
-        // Copy Dll
-        // HybridCLRSettings
-        var setting = HybridCLRSettings.LoadOrCreate();
-
-        var dllSrcPath = Path.Combine(projectDir, setting.hotUpdateDllCompileOutputRootDir, buildTarget, "Game.dll");
-        if (!File.Exists(dllSrcPath))
+        // Copy AOT Meta Dlls
+        var oldDlls = Directory.GetFiles(Path.Combine(assetsDir, "Game/DLL"), "*.bytes", SearchOption.AllDirectories);
+        foreach (var oldDll in oldDlls)
         {
-            Debug.LogError("BuildDLL Failed: Dll Not Found");
+            File.Delete(oldDll);
+        }
+
+        // 获取AOTGenericReferences.cs文件的路径
+        string aotReferencesFilePath = Path.Combine(
+            Application.dataPath,
+            SettingsUtil.HybridCLRSettings.outputAOTGenericReferenceFile
+        );
+
+        if (!File.Exists(aotReferencesFilePath))
+        {
+            Debug.LogError("AOTGenericReferences.cs file does not exist! Abort the build!");
             return false;
         }
 
-        var dllDstPath = Path.Combine(assetsDir, "Game/DLL", "Game.dll.bytes");
-        File.Copy(dllSrcPath, dllDstPath, true);
+        // 读取AOTGenericReferences.cs文件内容
+        string[] aotReferencesFileContent = File.ReadAllLines(aotReferencesFilePath);
+
+        // 查找PatchedAOTAssemblyList列表
+        for (int i = 0; i < aotReferencesFileContent.Length; i++)
+        {
+            if (aotReferencesFileContent[i].Contains("PatchedAOTAssemblyList"))
+            {
+                while (!aotReferencesFileContent[i].Contains("};"))
+                {
+                    if (aotReferencesFileContent[i].Contains("\""))
+                    {
+                        int startIndex = aotReferencesFileContent[i].IndexOf("\"") + 1;
+                        int endIndex = aotReferencesFileContent[i].LastIndexOf("\"");
+                        string dllName = aotReferencesFileContent[i].Substring(
+                            startIndex,
+                            endIndex - startIndex
+                        );
+
+                        var stripedDll = Path.Combine(SettingsUtil.AssembliesPostIl2CppStripDir, buildTarget, dllName);
+                        var dstPath = Path.Combine(assetsDir, "Game/DLL/AOTMeta", Path.GetFileName(dllName) + ".bytes");
+                        Debug.Log("Copy Striped Dll: " + stripedDll + " to " + dstPath);
+                        File.Copy(stripedDll, dstPath, true);
+                    }
+                    i++;
+                }
+                break;
+            }
+        }
+
+        // Copy HotUpdate Dll
+        var hotUpdateDllFolder = Path.Combine(SettingsUtil.HotUpdateDllsRootOutputDir, buildTarget);
+        foreach (var dll in SettingsUtil.HotUpdateAssemblyNamesExcludePreserved)
+        {
+            var srcPath = Path.Combine(hotUpdateDllFolder, dll + ".dll");
+            var dstPath = Path.Combine(assetsDir, "Game/DLL/HotUpdate", Path.GetFileName(dll) + ".dll.bytes");
+            Debug.Log("Copy HotUpdate Dll: " + srcPath + " to " + dstPath);
+            File.Copy(srcPath, dstPath, true);
+        }
 
         AssetDatabase.Refresh();
 

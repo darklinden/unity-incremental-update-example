@@ -52,6 +52,12 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4706ea2b11b727643ad79ad822f69401
+    m_Address: Assets/Game/DLL/HotUpdate
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HotUpdate
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4f2ad3b22def2cb48b82fb22872a375c
     m_Address: Assets/Game/Res/4.txt
     m_ReadOnly: 0
@@ -67,13 +73,14 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 739813d8ed751f348bd11949a0d9e831
+    m_Address: Assets/Game/DLL/AOTMeta
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AOTMeta
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af7e92fe10cb33845b5e8a4cf90cf44d
     m_Address: Assets/Game/Res/1.txt
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b13f23bf7d1236b4b8e4da64b4f6185b
-    m_Address: Assets/Game/DLL/Game.dll.bytes
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

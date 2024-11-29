@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: b26ff1fe98cbe5544ae63a59662af3bf
   m_currentHash:
     serializedVersion: 2
-    Hash: ad603be1ce18a9a684d5aaba1fd1f2c0
+    Hash: 475da8b95795ca559a25afd1f537a8ec
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 1
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 2
-  m_overridePlayerVersion: 1
+  m_overridePlayerVersion: v1.0
   m_GroupAssets:
   - {fileID: 11400000, guid: 9591284b6295d464ca9614da04d212e5, type: 2}
   - {fileID: 11400000, guid: bacc8b0794d73f647bc8c065d3d81f99, type: 2}
@@ -65,7 +65,7 @@ MonoBehaviour:
       - m_Id: 8cb1e366a7e44c448ade32baae0a96dd
         m_Value: ServerData/[BuildTarget]
       - m_Id: c552f23126c1b7c46a1155e70e74b022
-        m_Value: '{CatalogUrl.StringUrl}/[BuildTarget]'
+        m_Value: '{CatalogUrl.StringUrl}'
       - m_Id: c6eaf370fda0a33478f4355d59816496
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
     m_ProfileEntryNames:
@@ -88,6 +88,8 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - AOTMeta
+    - HotUpdate
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: a9ceba8b178db1846b8b00d44c0f0356, type: 2}
