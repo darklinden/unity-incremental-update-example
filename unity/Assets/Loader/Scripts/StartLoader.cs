@@ -9,12 +9,15 @@ using UnityEngine.Networking;
 using System.IO;
 using System;
 
+#if UNITY_EDITOR
+using UnityEditor.AddressableAssets;
+#endif
 
 public class StartLoader : MonoBehaviour
 {
 	public static bool IsInitialized { get; private set; } = false;
 
-	const string CHECK_UPDATE_URL = "https://192-168-1-233.traefik.me/";
+	const string CHECK_UPDATE_URL = "https://192-168-1-233.traefik.me";
 
 	// Game
 	const string DLL_DIR_AOT = "AOTMeta";
@@ -27,6 +30,25 @@ public class StartLoader : MonoBehaviour
 	void Start()
 	{
 		DontDestroyOnLoad(gameObject);
+
+#if UNITY_EDITOR
+
+		var playModeIndex = AddressableAssetSettingsDefaultObject.Settings.ActivePlayModeDataBuilderIndex;
+		var currentBuilder = AddressableAssetSettingsDefaultObject.Settings.DataBuilders[playModeIndex];
+		Debug.Log("StartLoader PlayModeDataBuilder: " + currentBuilder.GetType());
+		if (currentBuilder.GetType() == typeof(UnityEditor.AddressableAssets.Build.DataBuilders.BuildScriptFastMode))
+		{
+			Debug.Log("StartLoader BuildScriptFastMode, Skip Update");
+			var handler = Addressables.LoadSceneAsync(SCENE_GAME, UnityEngine.SceneManagement.LoadSceneMode.Single, true);
+			handler.Completed += (op) =>
+			{
+				Destroy(gameObject);
+			};
+			return;
+		}
+
+#endif
+
 		AsyncStart().Forget();
 	}
 

@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Compression;
 using HybridCLR.Editor;
-using HybridCLR.Editor.Settings;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Build;
@@ -87,6 +86,7 @@ public static class BuildDLLAndAddrs
         var oldDlls = Directory.GetFiles(Path.Combine(assetsDir, "Game/DLL"), "*.bytes", SearchOption.AllDirectories);
         foreach (var oldDll in oldDlls)
         {
+            Debug.Log("Delete Old Dll: " + oldDll);
             File.Delete(oldDll);
         }
 
