@@ -260,6 +260,11 @@ public class StartLoader : MonoBehaviour
 			{
 				string fileName = Path.Combine(destinationDirectoryName, entry.FullName);
 				Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+				// fix: overwrite existing files that longer than the new one may cause the new file to be incorrect
+				if (File.Exists(fileName))
+				{
+					File.Delete(fileName);
+				}
 				using (Stream inputStream = entry.Open())
 				using (Stream outputStream = File.OpenWrite(fileName))
 				{
@@ -376,10 +381,9 @@ public class StartLoader : MonoBehaviour
 			await AsyncReleaseAllAddressables();
 		}
 
-		// load code
-
-		// Editor环境下，HotUpdate.dll.bytes已经被自动加载，不需要加载，重复加载反而会出问题。
-#if !UNITY_EDITOR
+		// If AddressableAssetSettingsDefaultObject.Settings.DisableCatalogUpdateOnStartup == true;
+		// You need to manually update the catalog by calling Addressables.UpdateCatalogs();
+		// await Addressables.UpdateCatalogs();
 
 		// 加载AOT程序集
 		Debug.Log("Loader.AsyncInitialize Load AOT");
@@ -411,11 +415,6 @@ public class StartLoader : MonoBehaviour
 		}
 
 		Addressables.Release(huDllsHandle);
-
-#else
-		// Editor下无需加载，直接查找获得 Game 程序集
-		// Assembly hotUpdateAss = System.AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Game");
-#endif
 
 		Debug.Log("Loader.AsyncInitialize Done");
 

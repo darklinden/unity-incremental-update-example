@@ -34,6 +34,12 @@ public class Game : MonoBehaviour
             var textAsset = await Addressables.LoadAssetAsync<TextAsset>(asset);
             Debug.Log(textAsset.text);
         }
+
+        Debug.Log("All loaded");
+
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+
+        await Addressables.LoadSceneAsync("Assets/Game/Scenes/Other.unity");
     }
 }
 

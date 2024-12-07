@@ -66,7 +66,10 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Packed Addressables
-/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/Android/*
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/Android.meta
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/iOS/*
+/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/iOS.meta
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
@@ -84,8 +87,5 @@ Assets/AddressableAssetsData/link.xml.meta
 /output.txt
 *.log
 
-!/[Ll]ibrary/com.unity.addressables
-/[Ll]ibrary/com.unity.addressables/*.*
-/[Ll]ibrary/com.unity.addressables/*/*
-!/[Ll]ibrary/com.unity.addressables/Android/addressables_content_state.bin
-!/[Ll]ibrary/com.unity.addressables/iOS/addressables_content_state.bin
+Assets/Game/DLL/AOTMeta/*
+Assets/Game/DLL/HotUpdate/*
