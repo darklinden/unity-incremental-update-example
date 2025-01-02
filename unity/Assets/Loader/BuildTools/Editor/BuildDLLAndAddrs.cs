@@ -215,7 +215,7 @@ public static class BuildDLLAndAddrs
             return;
         }
 
-        Debug.Log("ReleaseDllAndAddrs Build Success");
+        Debug.Log("ReleaseMainPackage Build Success");
     }
 
     [MenuItem("Tools/Build Incremental Server Data")]
