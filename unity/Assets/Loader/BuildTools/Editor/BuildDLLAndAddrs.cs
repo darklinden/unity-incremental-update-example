@@ -101,8 +101,26 @@ public static class BuildDLLAndAddrs
 
     private static bool OnlyBuildPlayer()
     {
-        var options = new BuildPlayerOptions();
-        BuildPlayerOptions playerSettings = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(options);
+        var playerSettings = new BuildPlayerOptions
+        {
+            scenes = new[] { "Assets/Loader/Scenes/StartLoader.unity" },
+            target = EditorUserBuildSettings.activeBuildTarget,
+            options = BuildOptions.None,
+        };
+
+        switch (playerSettings.target)
+        {
+            case BuildTarget.Android:
+                playerSettings.locationPathName = $"Build/android/game-{WorkStr.MainVersion}.apk";
+                EditorUserBuildSettings.exportAsGoogleAndroidProject = false;
+                break;
+            case BuildTarget.iOS:
+                playerSettings.locationPathName = $"Build/ios/game-{WorkStr.MainVersion}";
+                break;
+            default:
+                Debug.LogError("OnlyBuildPlayer: Unsupported BuildTarget");
+                return false;
+        }
         var report = BuildPipeline.BuildPlayer(playerSettings);
         if (report.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
